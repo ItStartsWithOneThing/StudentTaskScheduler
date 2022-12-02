@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentTaskScheduler.Controllers
 {
@@ -11,6 +7,22 @@ namespace StudentTaskScheduler.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
+        [HttpGet]
+        public IActionResult GetMyJobs(string firstName, string lastName)
+        {
+            return Ok();
+        }
 
+        [HttpGet]
+        public IActionResult GetRelevantJobs()
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetAllStudents()
+        {
+            return Ok();
+        }
     }
 }
