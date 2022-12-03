@@ -65,14 +65,9 @@ namespace StudentTaskScheduler.BL.Services.StudentsService
 
         public async Task<StudentFullInfoDTO> GetStudentById(Guid id)
         {
-                var dbStudent = await _genericStudentRepository.GetById(id);
+            var dbStudent = await _genericStudentRepository.GetById(id);
 
-                return _mapper.Map<StudentFullInfoDTO>(dbStudent);
-        }
-
-        public Task<IEnumerable<JobDTO>> GetStudentJobs(string firstName, string lastName)
-        {
-            throw new NotImplementedException();
+            return _mapper.Map<StudentFullInfoDTO>(dbStudent);
         }
     }
 }

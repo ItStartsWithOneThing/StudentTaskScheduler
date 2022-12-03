@@ -20,7 +20,7 @@ namespace StudentTaskScheduler.BL.Automapper.Profiles
                 .ForMember(dest => dest.AssignedToId, opt => opt.MapFrom(src => src.AssignedToId))
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => src.ExpirationDate))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+                .ForMember(dest => dest.JobStatus, opt => opt.MapFrom(src => src.JobStatus));
 
             CreateMap<Job, JobFullInfoDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -30,7 +30,7 @@ namespace StudentTaskScheduler.BL.Automapper.Profiles
                 .ForMember(dest => dest.AssignedTo, opt => opt.MapFrom(src => src.AssignedTo.FirstName + src.AssignedTo.LastName))
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => src.ExpirationDate))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+                .ForMember(dest => dest.JobStatus, opt => opt.MapFrom(src => src.JobStatus));
 
 
             CreateMap<Job, JobDTO>()
@@ -39,7 +39,7 @@ namespace StudentTaskScheduler.BL.Automapper.Profiles
                 .ForMember(dest => dest.AssignedTo, opt => opt.MapFrom(src => src.AssignedTo.FirstName + src.AssignedTo.LastName))
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => src.ExpirationDate))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+                .ForMember(dest => dest.JobStatus, opt => opt.MapFrom(src => src.JobStatus));
         }
     }
 }

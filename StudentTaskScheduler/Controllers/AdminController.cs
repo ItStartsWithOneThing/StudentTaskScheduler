@@ -46,15 +46,29 @@ namespace StudentTaskScheduler.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetRelevantJobs()
+        public async Task<IActionResult> GetRelevantJobsWithFullInfo()
         {
-            return Ok();
+            var result = await _jobService.GetRelevantJobsWithFullInfo();
+
+            if(result != null)
+            {
+                return Ok(result);
+            }
+
+            return NotFound("There is no relevant jobs at this moment");
         }
 
         [HttpGet]
-        public IActionResult GetAllJobs()
+        public async Task<IActionResult> GetAllJobsWithFullInfo()
         {
-            return Ok();
+            var result = await _jobService.GetAllJobsWithFullInfo();
+
+            if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return NotFound(result);
         }
 
         [HttpPost]
@@ -87,15 +101,29 @@ namespace StudentTaskScheduler.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateJob(JobDTO job)
+        public async Task<IActionResult> CreateJob(JobFullInfoDTO job)
         {
-            return Ok();
+            var result = await _jobService.CreateJob(job);
+
+            if(result.Equals(Guid.Empty))
+            {
+                return BadRequest($"Student with id: {job.AssignedToId} doesn't exist");
+            }
+
+            return Created(result.ToString(), job);
         }
 
         [HttpPatch]
-        public IActionResult EndJob(Guid id)
+        public async Task<IActionResult> EndJob(Guid id)
         {
-            return Ok();
+            var result = await _jobService.EndJob(id);
+
+            if(result)
+            {
+                return Ok();
+            }
+
+            return NotFound(id);
         }
     }
 }

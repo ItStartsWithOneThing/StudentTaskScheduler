@@ -3,6 +3,7 @@ using StudentTaskScheduler.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,7 +33,7 @@ namespace StudentTaskScheduler.DAL.Repositories
                 return item.Id;
             }
 
-            throw new Exception("Error occurred while creating new item in Database");
+            throw new Exception($"Error occurred while creating new item with id: {item.Id} in Database");
         }
 
         public async Task<bool> DeleteById(Guid id)
@@ -85,6 +86,27 @@ namespace StudentTaskScheduler.DAL.Repositories
             }
 
             throw new Exception($"Error occurred while modifying item with id: {item.Id}");
+        }
+
+        public async Task<T> GetSingleByPredicate(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).FirstOrDefaultAsync();
+        }
+
+        public async Task<T> GetSingleByPredicateReadOnly(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AsNoTracking().Where(predicate).FirstOrDefaultAsync();
+        }
+
+
+        public async Task<IEnumerable<T>> GetRangeByPredicate(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetRangeByPredicateReadOnly(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
     }
 }

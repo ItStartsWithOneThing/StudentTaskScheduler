@@ -9,7 +9,6 @@ namespace StudentTaskScheduler.BL.Services.StudentsService
 {
     public interface IStudentService
     {
-        Task<IEnumerable<JobDTO>> GetStudentJobs(string firstName, string lastName);
         Task<IEnumerable<StudentDTO>> GetAllStudents();
         Task<StudentFullInfoDTO> GetStudentById(Guid id);
         Task<Guid> AddStudent(StudentFullInfoDTO student);
