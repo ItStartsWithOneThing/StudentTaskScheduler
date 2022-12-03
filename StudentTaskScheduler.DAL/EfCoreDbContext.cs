@@ -26,6 +26,7 @@ namespace StudentTaskScheduler.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
             modelBuilder.Entity<Student>().HasKey(s => s.Id);
+            modelBuilder.Entity<Student>().HasIndex(s => s.Login).IsUnique();
             modelBuilder.Entity<Student>().Property(s => s.FirstName).IsRequired().HasMaxLength(25);      
             modelBuilder.Entity<Student>().Property(s => s.LastName).IsRequired().HasMaxLength(25);
             modelBuilder.Entity<Student>().Property(s => s.Age).IsRequired();

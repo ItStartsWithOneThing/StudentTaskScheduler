@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentTaskScheduler.BL.DTOs;
+using StudentTaskScheduler.BL.Services.AuthorizationService;
 using StudentTaskScheduler.BL.Services.JobsService;
 using StudentTaskScheduler.BL.Services.StudentsService;
 using System;
@@ -13,13 +14,34 @@ namespace StudentTaskScheduler.Controllers
     {
         private readonly IJobService _jobService;
         private readonly IStudentService _studentService;
+        private readonly IAuthorizationService _authService;
 
         public AdminController(
             IJobService jobService,
-            IStudentService studentService)
+            IStudentService studentService,
+            IAuthorizationService authService)
         {
             _jobService = jobService;
             _studentService = studentService;
+            _authService = authService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SignIn(string login, string password)
+        {
+            string token;
+
+            try
+            {
+                token = await _authService.SignIn(login, password);
+            }
+
+            catch (ArgumentException)
+            {
+                return Unauthorized();
+            }
+
+            return token != null ? Ok(token) : Unauthorized();
         }
 
         [HttpGet]

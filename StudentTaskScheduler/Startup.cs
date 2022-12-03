@@ -5,11 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using StudentTaskScheduler.BL.Authorization;
 using StudentTaskScheduler.BL.Automapper.Profiles;
+using StudentTaskScheduler.BL.HashService;
+using StudentTaskScheduler.BL.Options;
+using StudentTaskScheduler.BL.Services.AuthorizationService;
 using StudentTaskScheduler.BL.Services.JobsService;
 using StudentTaskScheduler.BL.Services.StudentsService;
 using StudentTaskScheduler.DAL;
 using StudentTaskScheduler.DAL.Repositories;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace StudentTaskScheduler
@@ -24,11 +29,46 @@ namespace StudentTaskScheduler
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
             services.AddScoped<IJobService, JobService>();
             services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IAuthorizationService, AuthorizationService>();         
+            services.AddScoped<ITokenGenerator, TokenGenerator>();         
+            services.AddScoped<IHashService, HashService>();
+
+            services.Configure<AuthorizationOptions>(options =>
+                Configuration.GetSection(nameof(AuthorizationOptions)).Bind(options));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentTaskScheduler", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                        Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
+            });
 
             var assemblies = new[]
             {
@@ -43,10 +83,7 @@ namespace StudentTaskScheduler
             services.AddScoped(typeof(IDbGenericRepository<>), typeof(DbGenericRepository<>));
             services.AddScoped<IDbJobRepository, DbJobRepository>();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentTaskScheduler", Version = "v1" });
-            });
+            
         }
 
 

@@ -30,6 +30,11 @@ namespace StudentTaskScheduler.BL.Services.StudentsService
                 throw new Exception("You are trying to create an empty object");
             }
 
+            if(!student.Role.Equals(Roles.Admin))
+            {
+                student.Role = Roles.Student;
+            }
+
             var dbStudent = _mapper.Map<Student>(student);
 
             return await _genericStudentRepository.Create(dbStudent);
