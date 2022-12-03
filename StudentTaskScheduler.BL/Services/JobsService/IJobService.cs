@@ -9,6 +9,7 @@ namespace StudentTaskScheduler.BL.Services.JobsService
 {
     public interface IJobService
     {
+        Task<IEnumerable<JobDTO>> GetRelevantJobs();
         Task<IEnumerable<JobFullInfoDTO>> GetRelevantJobsWithFullInfo();
         Task<IEnumerable<JobFullInfoDTO>> GetAllJobsWithFullInfo();
         Task<IEnumerable<JobDTO>> GetStudentJobs(string firstName, string lastName);

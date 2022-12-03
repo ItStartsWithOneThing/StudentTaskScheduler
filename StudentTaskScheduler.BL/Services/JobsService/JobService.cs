@@ -66,6 +66,15 @@ namespace StudentTaskScheduler.BL.Services.JobsService
             return result;
         }
 
+        public async Task<IEnumerable<JobDTO>> GetRelevantJobs()
+        {
+            var dbJobs = await _genericJobRepository.GetRangeByPredicateReadOnly(x => x.JobStatus == JobStatuses.InProgress);
+
+            var result = _mapper.Map<IEnumerable<JobDTO>>(dbJobs);
+
+            return result;
+        }
+
         public async Task<IEnumerable<JobFullInfoDTO>> GetRelevantJobsWithFullInfo()
         {
             var dbJobs = await _genericJobRepository.GetRangeByPredicateReadOnly(x => x.JobStatus == JobStatuses.InProgress);
@@ -75,9 +84,13 @@ namespace StudentTaskScheduler.BL.Services.JobsService
             return result;
         }
 
-        public Task<IEnumerable<JobDTO>> GetStudentJobs(string firstName, string lastName)
+        public async Task<IEnumerable<JobDTO>> GetStudentJobs(string firstName, string lastName)
         {
-            throw new NotImplementedException();
+            var dbJobs = await _jobRepository.GetStudentJobs(firstName, lastName);
+
+            var result = _mapper.Map<IEnumerable<JobDTO>>(dbJobs);
+
+            return result;
         }
     }
 }

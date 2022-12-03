@@ -14,6 +14,14 @@ namespace StudentTaskScheduler.Controllers
         private readonly IJobService _jobService;
         private readonly IStudentService _studentService;
 
+        public AdminController(
+            IJobService jobService,
+            IStudentService studentService)
+        {
+            _jobService = jobService;
+            _studentService = studentService;
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetStudentById(Guid id)
         {

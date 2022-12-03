@@ -37,5 +37,20 @@ namespace StudentTaskScheduler.DAL.Repositories
 
             return false;
         }
+
+        public async Task<IEnumerable<Job>> GetStudentJobs(string firstName, string lastName)
+        {
+            var dbStudent = await _dbContext.Students
+                .AsNoTracking()
+                .Include(x => x.Jobs)
+                .FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
+
+            if(dbStudent != null)
+            {
+                return dbStudent.Jobs;
+            }
+
+            throw new Exception($"Can't find any student named {firstName} {lastName}");
+        }
     }
 }
