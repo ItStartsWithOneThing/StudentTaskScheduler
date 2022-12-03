@@ -9,7 +9,6 @@ namespace StudentTaskScheduler.BL.DTOs
 {
     public class JobDTO
     {
-        [Required]
         public string Title { get; set; }
         public string Definition { get; set; }
         public string AssignedTo { get; set; }

@@ -9,7 +9,7 @@ namespace StudentTaskScheduler.BL.DTOs
 {
     public class JobFullInfoDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [Required]
         [MinLength(2, ErrorMessage = "Minimal length is 2")]
@@ -24,11 +24,11 @@ namespace StudentTaskScheduler.BL.DTOs
         [Required]
         [DataType(nameof(Guid))]
         public Guid AssignedToId { get; set; }
-        public string? AssignedTo { get; set; }
+        public string AssignedTo { get; set; }
         public DateTime? StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Expiration date field is required")]
         public DateTime ExpirationDate { get; set; }
-        public string? JobStatus { get; set; }
+        public string JobStatus { get; set; }
     }
 }

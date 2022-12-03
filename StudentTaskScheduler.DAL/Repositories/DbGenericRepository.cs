@@ -13,6 +13,7 @@ namespace StudentTaskScheduler.DAL.Repositories
     {
         private readonly EfCoreDbContext _dbContext;
         private DbSet<T> _dbSet;
+
         public DbGenericRepository(EfCoreDbContext dbContext)
         {
             _dbContext = dbContext;
