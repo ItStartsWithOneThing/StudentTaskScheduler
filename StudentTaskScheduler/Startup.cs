@@ -31,6 +31,8 @@ namespace StudentTaskScheduler
         {
             services.AddControllers();
 
+            services.AddHttpContextAccessor();
+
             services.AddScoped<IJobService, JobService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IAuthorizationService, AuthorizationService>();         

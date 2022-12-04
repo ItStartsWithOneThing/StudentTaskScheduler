@@ -37,10 +37,5 @@ namespace StudentTaskScheduler.BL.Services.AuthorizationService
 
             throw new UnauthorizedAccessException("Wrong Email or Password");
         }
-
-        //public Task<Guid> SignUp(StudentFullInfoDTO user)
-        //{
-        //    return Guid.Empty;
-        //}
     }
 }

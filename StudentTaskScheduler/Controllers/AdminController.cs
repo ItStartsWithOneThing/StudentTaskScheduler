@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StudentTaskScheduler.BL.DTOs;
 using StudentTaskScheduler.BL.Services.AuthorizationService;
 using StudentTaskScheduler.BL.Services.JobsService;
@@ -14,16 +15,19 @@ namespace StudentTaskScheduler.Controllers
     {
         private readonly IJobService _jobService;
         private readonly IStudentService _studentService;
-        private readonly IAuthorizationService _authService;
+        private readonly IAuthorizationService _authService;   
+        private readonly ILogger<AdminController> _logger;
 
         public AdminController(
             IJobService jobService,
             IStudentService studentService,
-            IAuthorizationService authService)
+            IAuthorizationService authService,
+            ILogger<AdminController> logger)
         {
             _jobService = jobService;
             _studentService = studentService;
             _authService = authService;
+            _logger = logger;
         }
 
         [HttpGet("SignIn/{login}/{password}")]
@@ -36,21 +40,17 @@ namespace StudentTaskScheduler.Controllers
                 token = await _authService.SignIn(login, password);
             }
 
-            catch (ArgumentException)
+            catch (UnauthorizedAccessException ex)
             {
+                _logger.LogInformation($"User {login} authorization has failed wit message: {ex.Message}");
+
                 return Unauthorized();
             }
 
+            _logger.LogInformation($"User {login} successfully authorized");
+
             return token != null ? Ok(token) : Unauthorized();
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> SignUp(StudentFullInfoDTO user)
-        //{
-        //    var result = await _authService.SignUp(user);
-
-        //    return Ok();
-        //}
 
         [HttpGet("GetStudent/{id}")]
         public async Task<IActionResult> GetStudentById(Guid id)
@@ -79,6 +79,8 @@ namespace StudentTaskScheduler.Controllers
             {
                 return Ok(result);
             }
+
+            _logger.LogInformation("List of students is empty");
 
             return NotFound(result);
         }
@@ -118,6 +120,8 @@ namespace StudentTaskScheduler.Controllers
             {
                 student.Id = result;
 
+                _logger.LogInformation($"Created new student id: {student.Id}");
+
                 return Created(result.ToString(), student);   
             }
 
@@ -135,6 +139,8 @@ namespace StudentTaskScheduler.Controllers
                 return NoContent();
             }
 
+            _logger.LogInformation($"Student with id: {id} has been deleted");
+
             return NotFound();
         }
 
@@ -148,6 +154,8 @@ namespace StudentTaskScheduler.Controllers
                 return BadRequest($"Student with id: {job.AssignedToId} doesn't exist");
             }
 
+            _logger.LogInformation($"Added new job with id: {result}");
+
             return Created(result.ToString(), job);
         }
 
@@ -158,6 +166,8 @@ namespace StudentTaskScheduler.Controllers
 
             if(result)
             {
+                _logger.LogInformation($"The job with id: {id} is completed");
+
                 return Ok();
             }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StudentTaskScheduler.BL.Services.JobsService;
 using StudentTaskScheduler.BL.Services.StudentsService;
 using System;
@@ -12,13 +13,16 @@ namespace StudentTaskScheduler.Controllers
     {
         private readonly IStudentService _studentService;  
         private readonly IJobService _jobService;
+        private readonly ILogger<StudentsController> _logger;
 
         public StudentsController(
             IStudentService studentService,
-            IJobService jobService)
+            IJobService jobService,
+            ILogger<StudentsController> logger)
         {
             _studentService = studentService;
             _jobService = jobService;
+            _logger = logger;
         }
 
 
@@ -57,6 +61,8 @@ namespace StudentTaskScheduler.Controllers
             {
                 return Ok(result);
             }
+
+            _logger.LogInformation("List of students is empty");
 
             return NotFound("Can't find any student");
         }
