@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentTaskScheduler.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace StudentTaskScheduler.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("GetMyJobs/{firstName}/{lastName}")]
         public async Task<IActionResult> GetMyJobs(string firstName, string lastName)
         {
             var result = await _jobService.GetStudentJobs(firstName, lastName);
@@ -35,7 +35,7 @@ namespace StudentTaskScheduler.Controllers
             return Ok("You don't have any job yet");
         }
 
-        [HttpGet]
+        [HttpGet("GetRelevantJobs")]
         public async Task<IActionResult> GetRelevantJobs()
         {
             var result = await _jobService.GetRelevantJobs();
@@ -48,7 +48,7 @@ namespace StudentTaskScheduler.Controllers
             return NotFound("There is no relevant jobs at this moment");
         }
 
-        [HttpGet]
+        [HttpGet("GetAllStudents")]
         public async Task<IActionResult> GetAllStudents()
         {
             var result = await _studentService.GetAllStudents();

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace StudentTaskScheduler.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class AdminController : ControllerBase
     {
         private readonly IJobService _jobService;
@@ -26,7 +26,7 @@ namespace StudentTaskScheduler.Controllers
             _authService = authService;
         }
 
-        [HttpGet]
+        [HttpGet("SignIn/{login}/{password}")]
         public async Task<IActionResult> SignIn(string login, string password)
         {
             string token;
@@ -44,7 +44,15 @@ namespace StudentTaskScheduler.Controllers
             return token != null ? Ok(token) : Unauthorized();
         }
 
-        [HttpGet]
+        //[HttpPost]
+        //public async Task<IActionResult> SignUp(StudentFullInfoDTO user)
+        //{
+        //    var result = await _authService.SignUp(user);
+
+        //    return Ok();
+        //}
+
+        [HttpGet("GetStudent/{id}")]
         public async Task<IActionResult> GetStudentById(Guid id)
         {
             if(!id.Equals(Guid.Empty))
@@ -62,7 +70,7 @@ namespace StudentTaskScheduler.Controllers
             return BadRequest(id);
         }
 
-        [HttpGet]
+        [HttpGet("GetAllStudents")]
         public async Task<ActionResult> GetAllStudentsWithFullInfo()
         {
             var result = await _studentService.GetAllStudentsWithFullInfo();
@@ -75,7 +83,7 @@ namespace StudentTaskScheduler.Controllers
             return NotFound(result);
         }
 
-        [HttpGet]
+        [HttpGet("GetRelevantJobs")]
         public async Task<IActionResult> GetRelevantJobsWithFullInfo()
         {
             var result = await _jobService.GetRelevantJobsWithFullInfo();
@@ -88,7 +96,7 @@ namespace StudentTaskScheduler.Controllers
             return NotFound("There is no relevant jobs at this moment");
         }
 
-        [HttpGet]
+        [HttpGet("GetAllJobs")]
         public async Task<IActionResult> GetAllJobsWithFullInfo()
         {
             var result = await _jobService.GetAllJobsWithFullInfo();
@@ -101,8 +109,8 @@ namespace StudentTaskScheduler.Controllers
             return NotFound(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddStudent(StudentFullInfoDTO student)
+        [HttpPost("AddStudent")]
+        public async Task<IActionResult> AddStudent(StudentCreatingDTO student)
         {
             var result = await _studentService.AddStudent(student);
 
@@ -117,7 +125,7 @@ namespace StudentTaskScheduler.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("DeleteStudent/{id}")]
         public async Task<IActionResult> DeleteStudent(Guid id)
         {
             var result = await _studentService.DeleteStudent(id);
@@ -130,7 +138,7 @@ namespace StudentTaskScheduler.Controllers
             return NotFound();
         }
 
-        [HttpPost]
+        [HttpPost("CreateJob")]
         public async Task<IActionResult> CreateJob(JobFullInfoDTO job)
         {
             var result = await _jobService.CreateJob(job);
@@ -143,7 +151,7 @@ namespace StudentTaskScheduler.Controllers
             return Created(result.ToString(), job);
         }
 
-        [HttpPatch]
+        [HttpPatch("EndJob")]
         public async Task<IActionResult> EndJob(Guid id)
         {
             var result = await _jobService.EndJob(id);

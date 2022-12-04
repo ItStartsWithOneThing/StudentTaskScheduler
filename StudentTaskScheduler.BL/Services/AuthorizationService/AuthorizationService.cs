@@ -1,4 +1,5 @@
 ﻿using StudentTaskScheduler.BL.Authorization;
+using StudentTaskScheduler.BL.DTOs;
 using StudentTaskScheduler.BL.HashService;
 using StudentTaskScheduler.DAL.Entities;
 using StudentTaskScheduler.DAL.Repositories;
@@ -36,5 +37,10 @@ namespace StudentTaskScheduler.BL.Services.AuthorizationService
 
             throw new UnauthorizedAccessException("Wrong Email or Password");
         }
+
+        //public Task<Guid> SignUp(StudentFullInfoDTO user)
+        //{
+        //    return Guid.Empty;
+        //}
     }
 }

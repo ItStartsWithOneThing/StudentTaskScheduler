@@ -11,7 +11,7 @@ namespace StudentTaskScheduler.BL.Services.StudentsService
     {
         Task<IEnumerable<StudentDTO>> GetAllStudents();
         Task<StudentFullInfoDTO> GetStudentById(Guid id);
-        Task<Guid> AddStudent(StudentFullInfoDTO student);
+        Task<Guid> AddStudent(StudentCreatingDTO student);
         Task<IEnumerable<StudentFullInfoDTO>> GetAllStudentsWithFullInfo();
         Task<bool> DeleteStudent(Guid id);
     }

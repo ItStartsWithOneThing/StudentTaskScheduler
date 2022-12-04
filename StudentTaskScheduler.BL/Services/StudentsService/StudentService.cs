@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using StudentTaskScheduler.BL.DTOs;
+using StudentTaskScheduler.BL.HashService;
 using StudentTaskScheduler.DAL.Entities;
 using StudentTaskScheduler.DAL.Repositories;
 using System;
@@ -14,26 +15,37 @@ namespace StudentTaskScheduler.BL.Services.StudentsService
     {
         private readonly IDbGenericRepository<Student> _genericStudentRepository;
         private readonly IMapper _mapper;
+        private readonly IHashService _hashService;
 
         public StudentService(
             IDbGenericRepository<Student> genericStudentRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IHashService hashService)
         {
             _genericStudentRepository = genericStudentRepository;
             _mapper = mapper;
+            _hashService = hashService;
         }
 
-        public async Task<Guid> AddStudent(StudentFullInfoDTO student)
+        public async Task<Guid> AddStudent(StudentCreatingDTO student)
         {
             if(student == null)
             {
                 throw new Exception("You are trying to create an empty object");
             }
 
-            if(!student.Role.Equals(Roles.Admin))
+            if(!student.Role.ToUpper().Equals(Roles.Admin.ToUpper()))
             {
                 student.Role = Roles.Student;
             }
+            else
+            {
+                student.Role = Roles.Admin;
+            }
+
+            var hashedPassword = _hashService.HashString(student.Password);
+
+            student.Password = hashedPassword;
 
             var dbStudent = _mapper.Map<Student>(student);
 

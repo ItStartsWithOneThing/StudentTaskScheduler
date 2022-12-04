@@ -13,6 +13,17 @@ namespace StudentTaskScheduler.BL.Automapper.Profiles
     {
         public StudentProfile()
         {
+            CreateMap<StudentCreatingDTO, Student>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.Age))
+                .ForMember(dest => dest.Room, opt => opt.MapFrom(src => src.Room))
+                .ForMember(dest => dest.Faculty, opt => opt.MapFrom(src => src.Faculty))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role));
+
             CreateMap<StudentFullInfoDTO, Student>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))

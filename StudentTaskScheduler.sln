@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32929.386
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTaskScheduler", "StudentTaskScheduler\StudentTaskScheduler.csproj", "{672F1F41-0C79-439A-887F-895BA0BD0F3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentTaskScheduler", "StudentTaskScheduler\StudentTaskScheduler.csproj", "{672F1F41-0C79-439A-887F-895BA0BD0F3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTaskScheduler.BL", "StudentTaskScheduler.BL\StudentTaskScheduler.BL.csproj", "{0AD06436-6A2B-4F78-8D07-F53885BCEB65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentTaskScheduler.BL", "StudentTaskScheduler.BL\StudentTaskScheduler.BL.csproj", "{0AD06436-6A2B-4F78-8D07-F53885BCEB65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTaskScheduler.DAL", "StudentTaskScheduler.DAL\StudentTaskScheduler.DAL.csproj", "{6BA4B6FC-1ECD-4732-8C58-2F8F4717481A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentTaskScheduler.DAL", "StudentTaskScheduler.DAL\StudentTaskScheduler.DAL.csproj", "{6BA4B6FC-1ECD-4732-8C58-2F8F4717481A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentTaskScheduler.BL.DTOs
 {
-    public class StudentFullInfoDTO
+    public class StudentCreatingDTO
     {
         public Guid? Id { get; set; }
 
@@ -22,14 +22,23 @@ namespace StudentTaskScheduler.BL.DTOs
         public string LastName { get; set; }
 
         [Required]
+        [MinLength(2, ErrorMessage = "Minimal length is 2")]
+        [MaxLength(15, ErrorMessage = "Maximum length is 15")]
+        public string Login { get; set; }
+
+        [Required]
+        [MinLength(6, ErrorMessage = "Minimal length is 2")]
+        [MaxLength(12, ErrorMessage = "Maximum length is 12")]
+        public string Password { get; set; }
+
+        [Required]
         [Range(18, 30, ErrorMessage = "Age must be between 18 and 30 years")]
         public int Age { get; set; }
 
         [Required(ErrorMessage = "Student should have a room")]
-        [Range(1,7, ErrorMessage = "Our block has room numbers only from 1 to 7")]
+        [Range(1, 7, ErrorMessage = "Our block has room numbers only from 1 to 7")]
         public int Room { get; set; }
         public string Faculty { get; set; }
         public string Role { get; set; }
-        public ICollection<JobFullInfoDTO> Jobs { get; set; }
     }
 }
