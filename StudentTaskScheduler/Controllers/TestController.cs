@@ -26,22 +26,22 @@ namespace StudentTaskScheduler.Controllers
         }
 
         [HttpPost("MakeAdminSeed")]
-        public async Task<IActionResult> MakeAdminSeed(StudentCreatingDTO student)
+        public async Task<IActionResult> MakeAdminSeedAsync([FromForm]StudentCreatingDTO student)
         {
-            var result = await _studentService.AddStudent(student);
+            var result = await _studentService.AddStudentAsync(student);
 
             if (!result.Equals(Guid.Empty))
             {
-                student.Id = result;
+                _logger.LogError("Failed attempt to create new seed");
 
-                _logger.LogInformation($"New seed with id: {student.Id} has been created");
-
-                return Created(result.ToString(), student);
+                return BadRequest();
             }
 
-            _logger.LogInformation("Failed attempt to create new seed");
+            student.Id = result;
 
-            return BadRequest();
+            _logger.LogInformation($"New seed with id: {student.Id} has been created");
+
+            return Created(result.ToString(), student);
         }
     }
 }

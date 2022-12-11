@@ -23,11 +23,11 @@ namespace StudentTaskScheduler.BL.Services.AuthorizationService
             _hashService = hashService;
         }
 
-        public async Task<string> SignIn(string login, string password)
+        public async Task<string> SignInAsync(string login, string password)
         {
             var hashedPassword = _hashService.HashString(password);
 
-            var user = await _genericStudentRepository.GetSingleByPredicateReadOnly(
+            var user = await _genericStudentRepository.GetSingleByPredicateReadOnlyAsync(
                 x => x.Login == login && x.Password == hashedPassword);
 
             if (user != null)

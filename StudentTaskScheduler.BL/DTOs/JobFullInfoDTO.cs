@@ -24,11 +24,15 @@ namespace StudentTaskScheduler.BL.DTOs
         [Required]
         [DataType(nameof(Guid))]
         public Guid AssignedToId { get; set; }
+
         public string AssignedTo { get; set; }
+
         public DateTime? StartDate { get; set; }
+
 
         [Required(ErrorMessage = "Expiration date field is required")]
         public DateTime ExpirationDate { get; set; }
+
         public string JobStatus { get; set; }
     }
 }

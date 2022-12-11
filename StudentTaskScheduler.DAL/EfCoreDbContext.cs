@@ -13,15 +13,7 @@ namespace StudentTaskScheduler.DAL
         public DbSet<Student> Students { get; set; }
         public DbSet<Job> Jobs { get; set; }
 
-        public EfCoreDbContext(DbContextOptions<EfCoreDbContext> options) : base(options)
-        {
-
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder builder)
-        {
-
-        }
+        public EfCoreDbContext(DbContextOptions<EfCoreDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         { 
@@ -31,7 +23,6 @@ namespace StudentTaskScheduler.DAL
             modelBuilder.Entity<Student>().Property(s => s.LastName).IsRequired().HasMaxLength(25);
             modelBuilder.Entity<Student>().Property(s => s.Age).IsRequired();
             modelBuilder.Entity<Student>().Property(s => s.Room).IsRequired();
-
 
             modelBuilder.Entity<Job>().HasKey(j => j.Id);
             modelBuilder.Entity<Job>()

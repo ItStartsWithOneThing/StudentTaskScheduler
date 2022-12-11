@@ -29,14 +29,14 @@ namespace StudentTaskScheduler.BL.Services.JobsService
             _mapper = mapper;
         }
 
-        public async Task<Guid> CreateJob(JobFullInfoDTO job)
+        public async Task<Guid> CreateJobAsync(JobFullInfoDTO job)
         {
             if (job == null)
             {
                 throw new Exception("You are trying to create an empty object");
             }
 
-            var dbStudent = await _genericStudentRepository.GetById(job.AssignedToId);
+            var dbStudent = await _genericStudentRepository.GetByIdAsync(job.AssignedToId);
 
             if(dbStudent == null)
             {
@@ -49,44 +49,44 @@ namespace StudentTaskScheduler.BL.Services.JobsService
 
             var dbJob = _mapper.Map<Job>(job);
 
-            return await _genericJobRepository.Create(dbJob);
+            return await _genericJobRepository.CreateAsync(dbJob);
         }
 
-        public async Task<bool> EndJob(Guid id)
+        public async Task<bool> EndJobAsync(Guid id)
         {
-            return await _jobRepository.EndJob(id, JobStatuses.Done);
+            return await _jobRepository.EndJobAsync(id, JobStatuses.Done);
         }
 
-        public async Task<IEnumerable<JobFullInfoDTO>> GetAllJobsWithFullInfo()
+        public async Task<IEnumerable<JobFullInfoDTO>> GetAllJobsWithFullInfoAsync()
         {
-            var dbJobs = await _genericJobRepository.GetAll();
+            var dbJobs = await _genericJobRepository.GetAllAsync();
 
             var result = _mapper.Map<IEnumerable<JobFullInfoDTO>>(dbJobs);
 
             return result;
         }
 
-        public async Task<IEnumerable<JobDTO>> GetRelevantJobs()
+        public async Task<IEnumerable<JobDTO>> GetRelevantJobsAsync()
         {
-            var dbJobs = await _genericJobRepository.GetRangeByPredicateReadOnly(x => x.JobStatus == JobStatuses.InProgress);
+            var dbJobs = await _genericJobRepository.GetRangeByPredicateReadOnlyAsync(x => x.JobStatus == JobStatuses.InProgress);
 
             var result = _mapper.Map<IEnumerable<JobDTO>>(dbJobs);
 
             return result;
         }
 
-        public async Task<IEnumerable<JobFullInfoDTO>> GetRelevantJobsWithFullInfo()
+        public async Task<IEnumerable<JobFullInfoDTO>> GetRelevantJobsWithFullInfoAsync()
         {
-            var dbJobs = await _genericJobRepository.GetRangeByPredicateReadOnly(x => x.JobStatus == JobStatuses.InProgress);
+            var dbJobs = await _genericJobRepository.GetRangeByPredicateReadOnlyAsync(x => x.JobStatus == JobStatuses.InProgress);
 
             var result = _mapper.Map<IEnumerable<JobFullInfoDTO>>(dbJobs);
 
             return result;
         }
 
-        public async Task<IEnumerable<JobDTO>> GetStudentJobs(string firstName, string lastName)
+        public async Task<IEnumerable<JobDTO>> GetStudentJobsAsync(string firstName, string lastName)
         {
-            var dbJobs = await _jobRepository.GetStudentJobs(firstName, lastName);
+            var dbJobs = await _jobRepository.GetStudentJobsAsync(firstName, lastName);
 
             var result = _mapper.Map<IEnumerable<JobDTO>>(dbJobs);
 

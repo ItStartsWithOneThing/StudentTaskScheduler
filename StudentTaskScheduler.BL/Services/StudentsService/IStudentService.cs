@@ -9,10 +9,10 @@ namespace StudentTaskScheduler.BL.Services.StudentsService
 {
     public interface IStudentService
     {
-        Task<IEnumerable<StudentDTO>> GetAllStudents();
-        Task<StudentFullInfoDTO> GetStudentById(Guid id);
-        Task<Guid> AddStudent(StudentCreatingDTO student);
-        Task<IEnumerable<StudentFullInfoDTO>> GetAllStudentsWithFullInfo();
-        Task<bool> DeleteStudent(Guid id);
+        Task<IEnumerable<StudentDTO>> GetAllStudentsAsync();
+        Task<StudentFullInfoDTO> GetStudentByIdAsync(Guid id);
+        Task<Guid> AddStudentAsync(StudentCreatingDTO student);
+        Task<IEnumerable<StudentFullInfoDTO>> GetAllStudentsWithFullInfoAsync();
+        Task<bool> DeleteStudentAsync(Guid id);
     }
 }

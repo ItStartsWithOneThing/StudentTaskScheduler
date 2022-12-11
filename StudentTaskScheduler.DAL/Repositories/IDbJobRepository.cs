@@ -9,7 +9,7 @@ namespace StudentTaskScheduler.DAL.Repositories
 {
     public interface IDbJobRepository
     {
-        Task<bool> EndJob(Guid id, string status);
-        Task<IEnumerable<Job>> GetStudentJobs(string firstName, string lastName);
+        Task<bool> EndJobAsync(Guid id, string status);
+        Task<IEnumerable<Job>> GetStudentJobsAsync(string firstName, string lastName);
     }
 }

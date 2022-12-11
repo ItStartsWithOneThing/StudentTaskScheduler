@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StudentTaskScheduler.BL.Authorization;
 using StudentTaskScheduler.BL.Automapper.Profiles;
@@ -16,6 +18,7 @@ using StudentTaskScheduler.DAL;
 using StudentTaskScheduler.DAL.Repositories;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
 namespace StudentTaskScheduler
 {
@@ -41,6 +44,23 @@ namespace StudentTaskScheduler
 
             services.Configure<AuthorizationOptions>(options =>
                 Configuration.GetSection(nameof(AuthorizationOptions)).Bind(options));
+
+            var authOptions = Configuration.GetSection(nameof(AuthorizationOptions)).Get<AuthorizationOptions>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = authOptions.Issuer,
+                            ValidateAudience = true,
+                            ValidAudience = authOptions.Audience,
+                            ValidateLifetime = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(authOptions.Key)),
+                            ValidateIssuerSigningKey = true
+                        };
+                    });
 
             services.AddSwaggerGen(c =>
             {
@@ -81,11 +101,8 @@ namespace StudentTaskScheduler
             services.AddDbContext<EfCoreDbContext>(options =>
                         options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
-
             services.AddScoped(typeof(IDbGenericRepository<>), typeof(DbGenericRepository<>));
             services.AddScoped<IDbJobRepository, DbJobRepository>();
-
-            
         }
 
 

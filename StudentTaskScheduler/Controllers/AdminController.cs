@@ -30,124 +30,122 @@ namespace StudentTaskScheduler.Controllers
             _logger = logger;
         }
 
-        [HttpGet("SignIn/{login}/{password}")]
-        public async Task<IActionResult> SignIn(string login, string password)
+        [HttpGet("SignIn")]
+        public async Task<IActionResult> SignInAsync([FromBody]SignInCredentialsDTO credentials)
         {
             string token;
 
             try
             {
-                token = await _authService.SignIn(login, password);
+                token = await _authService.SignInAsync(credentials.Login, credentials.Password);
             }
-
             catch (UnauthorizedAccessException ex)
             {
-                _logger.LogInformation($"User {login} authorization has failed wit message: {ex.Message}");
+                _logger.LogError($"User {credentials.Login} authorization has failed wit message: {ex.Message}");
 
                 return Unauthorized();
             }
 
-            _logger.LogInformation($"User {login} successfully authorized");
+            _logger.LogInformation($"User {credentials.Login} successfully authorized");
 
             return token != null ? Ok(token) : Unauthorized();
         }
 
-        [HttpGet("GetStudent/{id}")]
-        public async Task<IActionResult> GetStudentById(Guid id)
+        [HttpGet("GetStudent")]
+        public async Task<IActionResult> GetStudentById([FromQuery]Guid id)
         {
-            if(!id.Equals(Guid.Empty))
+            if(id.Equals(Guid.Empty))
             {
-                var result = await _studentService.GetStudentById(id);
+                return BadRequest(id);
+            }
 
-                if(result !=null)
-                {
-                    return Ok(result);
-                }
+            var result = await _studentService.GetStudentByIdAsync(id);
 
+            if (result == null)
+            {
                 return NotFound(id);
             }
 
-            return BadRequest(id);
+            return Ok(result);
         }
 
         [HttpGet("GetAllStudents")]
         public async Task<ActionResult> GetAllStudentsWithFullInfo()
         {
-            var result = await _studentService.GetAllStudentsWithFullInfo();
+            var result = await _studentService.GetAllStudentsWithFullInfoAsync();
 
-            if (result != null)
+            if (result == null)
             {
-                return Ok(result);
+                    _logger.LogWarning("List of students is empty");
+
+                    return NotFound(result);
             }
 
-            _logger.LogInformation("List of students is empty");
-
-            return NotFound(result);
+            return Ok(result);
         }
 
         [HttpGet("GetRelevantJobs")]
         public async Task<IActionResult> GetRelevantJobsWithFullInfo()
         {
-            var result = await _jobService.GetRelevantJobsWithFullInfo();
+            var result = await _jobService.GetRelevantJobsWithFullInfoAsync();
 
-            if(result != null)
+            if(result == null)
             {
-                return Ok(result);
+                return NotFound("There is no relevant jobs at this moment");
             }
 
-            return NotFound("There is no relevant jobs at this moment");
+            return Ok(result);
         }
 
         [HttpGet("GetAllJobs")]
         public async Task<IActionResult> GetAllJobsWithFullInfo()
         {
-            var result = await _jobService.GetAllJobsWithFullInfo();
+            var result = await _jobService.GetAllJobsWithFullInfoAsync();
 
-            if (result != null)
+            if (result == null)
             {
-                return Ok(result);
+                return NotFound(result);
             }
 
-            return NotFound(result);
+            return Ok(result);
         }
 
         [HttpPost("AddStudent")]
-        public async Task<IActionResult> AddStudent(StudentCreatingDTO student)
+        public async Task<IActionResult> AddStudent([FromForm]StudentCreatingDTO student)
         {
-            var result = await _studentService.AddStudent(student);
+            var result = await _studentService.AddStudentAsync(student);
 
-            if (!result.Equals(Guid.Empty))
+            if (result.Equals(Guid.Empty))
             {
-                student.Id = result;
-
-                _logger.LogInformation($"Created new student id: {student.Id}");
-
-                return Created(result.ToString(), student);   
+                return BadRequest();
             }
 
-            return BadRequest();
+            student.Id = result;
+
+            _logger.LogInformation($"Created new student id: {student.Id}");
+
+            return Created(result.ToString(), student);
         }
 
 
-        [HttpDelete("DeleteStudent/{id}")]
-        public async Task<IActionResult> DeleteStudent(Guid id)
+        [HttpDelete("DeleteStudent")]
+        public async Task<IActionResult> DeleteStudent([FromQuery]Guid id)
         {
-            var result = await _studentService.DeleteStudent(id);
+            var result = await _studentService.DeleteStudentAsync(id);
 
-            if(result == true)
+            if(result)
             {
+                _logger.LogInformation($"Student with id: {id} has been deleted");
                 return NoContent();
             }
-
-            _logger.LogInformation($"Student with id: {id} has been deleted");
 
             return NotFound();
         }
 
         [HttpPost("CreateJob")]
-        public async Task<IActionResult> CreateJob(JobFullInfoDTO job)
+        public async Task<IActionResult> CreateJob([FromForm]JobFullInfoDTO job)
         {
-            var result = await _jobService.CreateJob(job);
+            var result = await _jobService.CreateJobAsync(job);
 
             if(result.Equals(Guid.Empty))
             {
@@ -160,9 +158,9 @@ namespace StudentTaskScheduler.Controllers
         }
 
         [HttpPatch("EndJob")]
-        public async Task<IActionResult> EndJob(Guid id)
+        public async Task<IActionResult> EndJob([FromQuery]Guid id)
         {
-            var result = await _jobService.EndJob(id);
+            var result = await _jobService.EndJobAsync(id);
 
             if(result)
             {

@@ -20,8 +20,7 @@ namespace StudentTaskScheduler.DAL.Repositories
             _dbSet = _dbContext.Set<T>();
         }
 
-
-        public async Task<Guid> Create(T item)
+        public async Task<Guid> CreateAsync(T item)
         {
             item.Id = Guid.NewGuid();
 
@@ -34,10 +33,10 @@ namespace StudentTaskScheduler.DAL.Repositories
                 return item.Id;
             }
 
-            throw new Exception($"Error occurred while creating new item with id: {item.Id} in Database");
+            return Guid.Empty;
         }
 
-        public async Task<bool> DeleteById(Guid id)
+        public async Task<bool> DeleteByIdAsync(Guid id)
         {
             var dbItem = await _dbSet.FindAsync(id);
 
@@ -58,17 +57,17 @@ namespace StudentTaskScheduler.DAL.Repositories
             throw new Exception($"Error occurred while deleting item with id: {id}");
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public async Task<T> GetById(Guid id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
             return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<bool> Update(T item)
+        public async Task<bool> UpdateAsync(T item)
         {
             var dbItem = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == item.Id);
 
@@ -89,23 +88,23 @@ namespace StudentTaskScheduler.DAL.Repositories
             throw new Exception($"Error occurred while modifying item with id: {item.Id}");
         }
 
-        public async Task<T> GetSingleByPredicate(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetSingleByPredicateAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).FirstOrDefaultAsync();
         }
 
-        public async Task<T> GetSingleByPredicateReadOnly(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetSingleByPredicateReadOnlyAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.AsNoTracking().Where(predicate).FirstOrDefaultAsync();
         }
 
 
-        public async Task<IEnumerable<T>> GetRangeByPredicate(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> GetRangeByPredicateAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetRangeByPredicateReadOnly(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> GetRangeByPredicateReadOnlyAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.AsNoTracking().Where(predicate).ToListAsync();
         }

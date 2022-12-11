@@ -17,7 +17,7 @@ namespace StudentTaskScheduler.DAL.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<bool> EndJob(Guid id, string status)
+        public async Task<bool> EndJobAsync(Guid id, string status)
         {
             var dbJob = await _dbContext.Jobs.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -38,7 +38,7 @@ namespace StudentTaskScheduler.DAL.Repositories
             return false;
         }
 
-        public async Task<IEnumerable<Job>> GetStudentJobs(string firstName, string lastName)
+        public async Task<IEnumerable<Job>> GetStudentJobsAsync(string firstName, string lastName)
         {
             var dbStudent = await _dbContext.Students
                 .AsNoTracking()

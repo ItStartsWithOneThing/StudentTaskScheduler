@@ -10,14 +10,14 @@ namespace StudentTaskScheduler.DAL.Repositories
 {
     public interface IDbGenericRepository<T> where T: BaseEntity, new()
     {
-        Task<Guid> Create(T item);
-        Task<IEnumerable<T>> GetAll();
-        Task<T> GetById(Guid id);
-        Task<bool> Update(T item);
-        Task<bool> DeleteById(Guid id);
-        Task<T> GetSingleByPredicate(Expression<Func<T, bool>> predicate);
-        Task<T> GetSingleByPredicateReadOnly(Expression<Func<T, bool>> predicate);
-        Task<IEnumerable<T>> GetRangeByPredicate(Expression<Func<T, bool>> predicate);
-        Task<IEnumerable<T>> GetRangeByPredicateReadOnly(Expression<Func<T, bool>> predicate);
+        Task<Guid> CreateAsync(T item);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(Guid id);
+        Task<bool> UpdateAsync(T item);
+        Task<bool> DeleteByIdAsync(Guid id);
+        Task<T> GetSingleByPredicateAsync(Expression<Func<T, bool>> predicate);
+        Task<T> GetSingleByPredicateReadOnlyAsync(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> GetRangeByPredicateAsync(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> GetRangeByPredicateReadOnlyAsync(Expression<Func<T, bool>> predicate);
     }
 }

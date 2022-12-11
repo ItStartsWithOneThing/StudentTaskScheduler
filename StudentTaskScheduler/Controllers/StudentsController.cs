@@ -26,45 +26,45 @@ namespace StudentTaskScheduler.Controllers
         }
 
 
-        [HttpGet("GetMyJobs/{firstName}/{lastName}")]
-        public async Task<IActionResult> GetMyJobs(string firstName, string lastName)
+        [HttpGet("GetMyJobs")]
+        public async Task<IActionResult> GetMyJobsAsync([FromQuery]string firstName, string lastName)
         {
-            var result = await _jobService.GetStudentJobs(firstName, lastName);
+            var result = await _jobService.GetStudentJobsAsync(firstName, lastName);
 
-            if(result != null)
+            if(result == null)
             {
-                return Ok(result);
+                return Ok("You don't have any job yet");
             }
 
-            return Ok("You don't have any job yet");
+            return Ok(result);
         }
 
         [HttpGet("GetRelevantJobs")]
-        public async Task<IActionResult> GetRelevantJobs()
+        public async Task<IActionResult> GetRelevantJobsAsync()
         {
-            var result = await _jobService.GetRelevantJobs();
+            var result = await _jobService.GetRelevantJobsAsync();
 
-            if (result != null)
+            if (result == null)
             {
-                return Ok(result);
+                return NotFound("There is no relevant jobs at this moment");
             }
 
-            return NotFound("There is no relevant jobs at this moment");
+            return Ok(result);
         }
 
         [HttpGet("GetAllStudents")]
-        public async Task<IActionResult> GetAllStudents()
+        public async Task<IActionResult> GetAllStudentsAsync()
         {
-            var result = await _studentService.GetAllStudents();
+            var result = await _studentService.GetAllStudentsAsync();
 
-            if (result != null)
+            if (result == null)
             {
-                return Ok(result);
+                _logger.LogWarning("List of students is empty");
+
+                return NotFound("Can't find any student");
             }
 
-            _logger.LogInformation("List of students is empty");
-
-            return NotFound("Can't find any student");
+            return Ok(result);
         }
     }
 }

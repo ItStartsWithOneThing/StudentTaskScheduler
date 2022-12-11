@@ -9,11 +9,11 @@ namespace StudentTaskScheduler.BL.Services.JobsService
 {
     public interface IJobService
     {
-        Task<IEnumerable<JobDTO>> GetRelevantJobs();
-        Task<IEnumerable<JobFullInfoDTO>> GetRelevantJobsWithFullInfo();
-        Task<IEnumerable<JobFullInfoDTO>> GetAllJobsWithFullInfo();
-        Task<IEnumerable<JobDTO>> GetStudentJobs(string firstName, string lastName);
-        Task<Guid> CreateJob(JobFullInfoDTO job);
-        Task<bool> EndJob(Guid id);
+        Task<IEnumerable<JobDTO>> GetRelevantJobsAsync();
+        Task<IEnumerable<JobFullInfoDTO>> GetRelevantJobsWithFullInfoAsync();
+        Task<IEnumerable<JobFullInfoDTO>> GetAllJobsWithFullInfoAsync();
+        Task<IEnumerable<JobDTO>> GetStudentJobsAsync(string firstName, string lastName);
+        Task<Guid> CreateJobAsync(JobFullInfoDTO job);
+        Task<bool> EndJobAsync(Guid id);
     }
 }

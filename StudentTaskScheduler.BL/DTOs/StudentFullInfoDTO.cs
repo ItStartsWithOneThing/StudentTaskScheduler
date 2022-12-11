@@ -28,8 +28,11 @@ namespace StudentTaskScheduler.BL.DTOs
         [Required(ErrorMessage = "Student should have a room")]
         [Range(1,7, ErrorMessage = "Our block has room numbers only from 1 to 7")]
         public int Room { get; set; }
+
         public string Faculty { get; set; }
+
         public string Role { get; set; }
+
         public ICollection<JobFullInfoDTO> Jobs { get; set; }
     }
 }
